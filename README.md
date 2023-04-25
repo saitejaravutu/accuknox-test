@@ -25,4 +25,4 @@ docker build -t my_app_image .
 
 docker run -p 4499:4499 my_app_image
 
-#This will start a container running your application and map the container's port 4499 to the host's port 4499. You can then access the application by opening a web browser and navigating to http://localhost:4499..
+#This will start a container running your application and map the container's port 4499 to the host's port 4499. You can then access the application by opening a web browser and navigating to http://localhost:4499.
