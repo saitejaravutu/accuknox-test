@@ -1,20 +1,21 @@
-# Use the official Node.js runtime as a parent image
-FROM node:14-alpine
+# Use an official Python runtime as a parent image
+FROM alpine:latest
 
-# Set the working directory to /app
+# Install necessary packages
+RUN apk update && \
+    apk add --no-cache bash fortune cowsay
+
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy the application code into the container
+COPY wisecow.sh /app
 
-# Install dependencies
-RUN npm install
+# Make the script executable
+RUN chmod +x wisecow.sh
 
-# Copy the rest of the application code to the working directory
-COPY . .
+# Expose the port used by the application
+EXPOSE 4499
 
-# Expose port 3000
-EXPOSE 3000
-
-# Start the application
-CMD [ "npm", "start" ]
+# Start the application when the container starts
+CMD ["/app/wisecow.sh"]
