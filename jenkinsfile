@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build Docker image') {
+            steps {
+                script {
+                    // Clone the GitHub repository
+                    git 'https://github.com/saitejaravutu/accuknox-test.git'
+
+                    // Build the Docker image
+                    docker.build('my_app_image')
+                }
+            }
+        }
+
+        stage('Run container') {
+            steps {
+                script {
+                    // Run the container in detached mode
+                    def app_container = docker.run('-p 4499:4499 --name my_app_container -d my_app_image')
+
+                    // Print the container ID for reference
+                    echo "App container ID: ${app_container.id}"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Manually stop and remove the container
+            script {
+                docker.container('my_app_container').stop()
+                docker.container('my_app_container').remove(force: true)
+            }
+        }
+    }
+}
